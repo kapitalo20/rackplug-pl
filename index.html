@@ -4,6 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="canonical" href="https://rackplug.pl/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rackplug.pl/">
+<meta property="og:title" content="RackPlug · Kacper Szczepański">
+<meta property="og:description" content="Ta strona należy do Kacpra Szczepańskiego. W 2027 roku będzie bogaty.">
+<meta property="og:image" content="https://rackplug.pl/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#111316">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RackPlug">
 <title>RackPlug · Kacper Szczepański</title>
 <meta name="description" content="rackplug.com należy do Kacpra Szczepańskiego. W 2027 roku będzie bogaty.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,25 +94,11 @@ button.key:active { transform: translateY(1px); filter: brightness(.92); }
 
 .toolbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; border-radius: 8px; background: linear-gradient(180deg, #2a2e34, #16181c); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 0 1px #000, 0 8px 18px rgba(0,0,0,.55); }
 .toolbar .spacer { flex: 1 1 0; min-width: 0; }
-.project { text-align: center; padding: 11px 12px; border-radius: 5px; font: 700 13px/1 var(--f-ui); letter-spacing: .08em; text-transform: uppercase; background: #0b0c0e; box-shadow: inset 0 2px 5px rgba(0,0,0,.9), 0 0 0 2px #3a3f46; }
+.project { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 14px; padding: 11px 12px; border-radius: 5px; font: 700 13px/1 var(--f-ui); letter-spacing: .08em; text-transform: uppercase; background: #0b0c0e; box-shadow: inset 0 2px 5px rgba(0,0,0,.9), 0 0 0 2px #3a3f46; }
 
-.lane { --ear: 26px; position: relative; display: grid; gap: 12px; padding: 14px; margin-inline: var(--ear); border-radius: 4px; background: linear-gradient(180deg, #2f343a, #1c1f24 30%, #17191d); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 0 0 1px #000, 0 12px 28px rgba(0,0,0,.5); }
-/* 19-inch rack ears: brushed aluminium, two oval mounting slots each, screw heads in them */
-.lane::before, .lane::after {
-  content: ""; position: absolute; top: 0; bottom: 0; width: var(--ear);
-  background:
-    radial-gradient(circle at 50% 22px, #d9dde2 0 3px, #5f656d 3.6px, transparent 4.2px),
-    radial-gradient(circle at 50% calc(100% - 22px), #d9dde2 0 3px, #5f656d 3.6px, transparent 4.2px),
-    radial-gradient(7px 5px at 50% 22px, #050607 92%, transparent),
-    radial-gradient(7px 5px at 50% calc(100% - 22px), #050607 92%, transparent),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.14) 0 1px, transparent 1px 2px, rgba(0,0,0,.08) 2px 3px),
-    linear-gradient(90deg, #7d838b, #e3e6ea 45%, #b3b9c0 70%, #6c727a);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -1px 0 rgba(0,0,0,.5), 0 0 0 1px #0a0b0d;
-}
-.lane::before { left: calc(-1 * var(--ear)); border-radius: 4px 0 0 4px; }
-.lane::after { right: calc(-1 * var(--ear)); border-radius: 0 4px 4px 0; transform: scaleX(-1); }
+.lane { position: relative; display: grid; gap: 12px; padding: 14px; border-radius: 10px; background: linear-gradient(180deg, #2f343a, #1c1f24 30%, #17191d); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 0 0 1px #000, 0 12px 28px rgba(0,0,0,.5); }
 /* the rack's top label strip, engraved like a front panel */
-.rack-label { display: flex; justify-content: space-between; gap: 10px; margin-inline: var(--ear, 26px); padding: 0 4px; font: 600 11px/1 var(--f-cond); letter-spacing: .2em; text-transform: uppercase; color: #6f7680; text-shadow: 0 1px 0 rgba(255,255,255,.06); }
+.rack-label { display: flex; justify-content: space-between; gap: 10px; padding: 0 4px; font: 600 11px/1 var(--f-cond); letter-spacing: .2em; text-transform: uppercase; color: #6f7680; text-shadow: 0 1px 0 rgba(255,255,255,.06); }
 .head { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: stretch; }
 .num { display: grid; place-items: center; min-width: 64px; font: 800 38px/1 var(--f-ui); color: transparent; -webkit-text-stroke: 1.5px #d4d8dd; border-radius: 6px; background: linear-gradient(180deg, #2c3036, #15171a); box-shadow: 0 0 0 2px #3a3f46; }
 .plate { display: grid; place-items: center; min-width: 0; padding: 10px; border-radius: 6px; font: 800 clamp(18px, 4vw, 30px)/1.1 var(--f-ui); text-transform: uppercase; text-align: center; color: #fff; background: linear-gradient(180deg, #3f7fe0, var(--cobalt) 45%, var(--cobalt-deep)); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 0 0 2px #2b2f35, 0 0 18px rgba(31,95,191,.35); text-wrap: balance; }
@@ -171,6 +173,37 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
 .credit .plate { font-size: clamp(16px, 3vw, 22px); min-height: 52px; }
 .credit p { margin: 0; font: 700 clamp(16px, 3vw, 20px)/1.3 var(--f-ui); color: var(--text); min-width: 0; }
 @media (max-width: 560px) { .credit { grid-template-columns: 1fr; gap: 8px; } }
+/* AMBICJA knob: brushed cap, white pointer, scale 0–11 */
+.amb { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; padding: 10px 12px; border-radius: 6px; background: #0b0c0e; box-shadow: inset 0 2px 5px rgba(0,0,0,.9), 0 0 0 2px #3a3f46; }
+.knob { position: relative; width: 64px; height: 64px; border-radius: 50%; touch-action: none; cursor: grab;
+  background: repeating-conic-gradient(from 0deg, rgba(255,255,255,.07) 0 4deg, rgba(0,0,0,.06) 4deg 8deg), radial-gradient(circle at 40% 32%, #f1f3f5, #b7bcc3 45%, #6c727a 80%, #3a3f46);
+  box-shadow: 0 0 0 3px #15171a, 0 0 0 4px #4a4f56, 0 6px 12px rgba(0,0,0,.7); }
+.knob::after { content: ""; position: absolute; left: 50%; top: 6px; width: 4px; height: 20px; margin-left: -2px; border-radius: 2px; background: #fff; box-shadow: 0 0 6px rgba(255,255,255,.7); }
+.knob:focus-visible { outline: 3px solid var(--led-a); outline-offset: 4px; }
+.amb-read { display: grid; gap: 4px; min-width: 0; }
+.amb-read b { font: 800 clamp(16px, 3.2vw, 20px)/1 var(--f-ui); text-transform: uppercase; letter-spacing: .04em; }
+.amb-read span { font: 400 clamp(14px, 2.8vw, 18px)/1.2 var(--f-mono); color: var(--led-a); }
+.amb-read small { font: 600 13px/1.3 var(--f-cond); color: var(--muted); }
+/* patchbay: two jacks and a cable you drag */
+.patchbay { position: relative; height: 190px; margin-top: 14px; border-radius: 6px; background: linear-gradient(180deg, #181b1f, #0d0e10); box-shadow: inset 0 0 0 1px #2c3036; }
+#jack-a { touch-action: none; }
+.patchbay svg { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.jack { position: absolute; top: 18px; display: grid; justify-items: center; gap: 8px; width: 96px; font: 800 13px/1.1 var(--f-ui); text-transform: uppercase; text-align: center; color: var(--text); }
+.jack .hole { order: 2; width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle, #000 0 9px, #3a3f46 10px, #d9dde2 13px, #8d939b 17px, #2c3036 22px); box-shadow: 0 0 0 2px #0a0b0d, 0 3px 6px rgba(0,0,0,.6); }
+.jack.grab .hole { cursor: grab; }
+.jack.lit .hole { box-shadow: 0 0 0 2px #0a0b0d, 0 0 16px var(--led-g); }
+#jack-a { left: 12px; } #jack-b { right: 12px; }
+/* EGO load readout in the project bar */
+.ego { display: inline-flex; align-items: center; gap: 8px; font: 400 13px/1 var(--f-mono); letter-spacing: .04em; color: var(--muted); }
+.ego i { position: relative; width: 70px; height: 8px; border-radius: 4px; background: #050607; box-shadow: 0 0 0 1px #2c3036; overflow: hidden; }
+.ego i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--ego, 98%); background: linear-gradient(90deg, var(--led-g), var(--led-a) 80%, var(--led-r)); transition: width .3s; }
+.ego.over { color: var(--led-r); animation: blink .3s steps(1) 4; }
+/* excuse generator */
+.excuse { min-height: 2.6em; margin-top: 14px; padding: 12px 14px; border-radius: 6px; background: #0b0c0e; box-shadow: inset 0 2px 5px rgba(0,0,0,.9); font: 700 clamp(17px, 3.4vw, 22px)/1.3 var(--f-ui); color: var(--text); }
+.foot button { background: none; color: inherit; font: inherit; letter-spacing: inherit; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+/* REC clock */
+.rec-clock { margin-top: 14px; display: flex; align-items: center; gap: 10px; font: 400 clamp(22px, 6vw, 40px)/1 var(--f-mono); font-variant-numeric: tabular-nums; color: #ff6b6b; }
+.rec-clock .dot { width: 14px; height: 14px; animation: blink 1s steps(1) infinite; }
 /* ALIGN */
 .phase { display: grid; gap: 8px; margin-top: 14px; }
 .track { display: grid; grid-template-columns: 7.5em 1fr; gap: 10px; align-items: center; font: 700 14px/1 var(--f-ui); text-transform: uppercase; }
@@ -189,9 +222,8 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   .toolbar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 8px; }
   .toolbar .key { padding: 0 4px; font-size: 13px; min-width: 0; }
   .toolbar .spacer, .toolbar .live { display: none; }
-  .lane { --ear: 14px; padding: 10px; }
-  .lane::before, .lane::after { background-size: auto; }
-  .rack-label { --ear: 14px; letter-spacing: .12em; }
+  .lane { padding: 10px; }
+  .rack-label { letter-spacing: .12em; }
   .num { min-width: 52px; font-size: 30px; }
   .slot { grid-template-columns: 34px 1fr; }
   .slot-num { font-size: 24px; }
@@ -200,7 +232,7 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   .insta-logo::before { inset: 9px; border-width: 3px; border-radius: 9px; }
   .insta-logo::after { width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-width: 3px; }
 }
-@media (prefers-reduced-motion: reduce) { .scan-title .dot, .bar i { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .scan-title .dot, .bar i, .rec-clock .dot { animation: none; } }
 </style>
 </head>
 <body>
@@ -215,20 +247,24 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
     <span class="key dark live" aria-hidden="true"><span class="dot amber"></span>Live</span>
   </div>
 
-  <div class="project">Project | Kacper Szczepański</div>
+  <div class="project"><span>Project | Kacper Szczepański</span><span class="ego" id="ego" aria-label="Obciążenie ego"><span id="ego-t">EGO 98%</span><i></i></span></div>
 
   <div class="rack-label" aria-hidden="true"><span>RackPlug · Rack 01</span><span>1U · 19"</span></div>
 
   <!-- RACKPLUG -->
   <section class="lane" id="v-racks" role="tabpanel" aria-labelledby="t-racks">
     <div class="head">
-      <div class="num" aria-hidden="true">01</div>
-      <div class="plate">Kacper Szczepański</div>
+      <div class="num" id="num" aria-hidden="true">01</div>
+      <div class="plate" id="plate">Kacper Szczepański</div>
       <div class="key dark pdc" aria-label="Rok 2027: bogaty"><b>2027</b><span>Bogaty</span></div>
     </div>
     <div class="io">
       <span class="key" aria-hidden="true">In 01</span>
       <div class="meter" id="meter" role="meter" aria-label="Postęp do 2027 roku"></div>
+    </div>
+    <div class="amb">
+      <div class="knob" id="knob" role="slider" tabindex="0" aria-label="Ambicja" aria-valuemin="0" aria-valuemax="11" aria-valuenow="5"></div>
+      <div class="amb-read"><b>Ambicja</b><span id="amb-val">5 / 11</span><small id="amb-note">Kręć palcem w górę. Skala idzie do 11.</small></div>
     </div>
     <div class="slot">
       <div class="slot-num" aria-hidden="true">1</div>
@@ -265,6 +301,17 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   <!-- PATCH -->
   <section class="lane" id="v-patch" role="tabpanel" aria-labelledby="t-patch" hidden>
     <div class="display">
+      <div class="eyebrow"><span class="dot green" id="bay-dot"></span>Patchbay · kabel</div>
+      <h2>Podłącz Instagram do konta</h2>
+      <p>Złap wtyk przy INSTAGRAM i przeciągnij do gniazda KONTO.</p>
+      <div class="patchbay" id="bay">
+        <svg id="cable" aria-hidden="true"></svg>
+        <div class="jack grab" id="jack-a"><span class="hole"></span>Instagram<br>Out</div>
+        <div class="jack" id="jack-b"><span class="hole"></span>Konto<br>In</div>
+      </div>
+      <div class="notice" id="notice-bay" aria-live="polite" style="margin-top:12px"></div>
+    </div>
+    <div class="display">
       <div class="eyebrow"><span class="dot green"></span>Patch · routing pieniędzy</div>
       <h2>Wszystkie wejścia idą do Kacpra</h2>
       <p>Kliknij dowolny punkt. Sygnał i tak trafi na konto.</p>
@@ -300,6 +347,11 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
     </div>
     <button class="key cobalt" id="btn-align">Wyrównaj jeszcze raz</button>
     <div class="notice" id="notice-align" aria-live="polite"></div>
+    <div class="display">
+      <div class="eyebrow"><span class="dot amber"></span>Generator wymówek dźwiękowca</div>
+      <div class="excuse" id="excuse" aria-live="polite">To nie mikser. To sala.</div>
+    </div>
+    <button class="key" id="btn-excuse">Losuj wymówkę</button>
   </section>
 
   <!-- REC -->
@@ -308,6 +360,7 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
       <div class="eyebrow"><span class="dot red"></span>Rec · take 2027</div>
       <h2>Nagrywanie trwa</h2>
       <p>Ślad 01: bogactwo, 48 kHz, 24 bit. Folder sesji: konto Kacpra.</p>
+      <div class="rec-clock" aria-label="Czas nagrywania od 1 stycznia 2026"><span class="dot red"></span><span id="rec-clock">000d 00:00:00</span></div>
     </div>
     <button class="key on-red" id="btn-stop" style="min-height:60px;font-size:clamp(20px,4vw,28px)">■ Stop Rec</button>
     <div class="notice" id="notice-rec" aria-live="polite"></div>
@@ -327,6 +380,7 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
 
   <footer class="foot">
     <span>© 2026 Kacper Szczepański. Wszelkie prawa zastrzeżone.</span>
+    <button id="btn-sound" aria-pressed="true">Klik przekaźnika: wł.</button>
     <span>rackplug.com · .app · .pl · .eu</span>
   </footer>
 </main>
@@ -337,6 +391,49 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   function $(id) { return document.getElementById(id); }
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function say(id, text) { var n = $(id); n.textContent = ""; setTimeout(function () { n.textContent = text; }, 30); }
+
+  /* relay click on every key (synthesised, starts only after a tap; can be switched off) + short buzz on Android */
+  var soundOn = true, ac = null;
+  try { soundOn = localStorage.getItem("rp-sound") !== "0"; } catch (e) {}
+  function relay() {
+    if (!soundOn) return;
+    try {
+      ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+      var t = ac.currentTime, n = ac.createBuffer(1, Math.floor(ac.sampleRate * 0.012), ac.sampleRate), ch = n.getChannelData(0);
+      for (var i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / ch.length);
+      var src = ac.createBufferSource(), bp = ac.createBiquadFilter(), g = ac.createGain();
+      src.buffer = n; bp.type = "bandpass"; bp.frequency.value = 2600; bp.Q.value = 1.2; g.gain.value = 0.5;
+      src.connect(bp).connect(g).connect(ac.destination); src.start(t);
+      var o = ac.createOscillator(), og = ac.createGain();
+      o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(60, t + 0.03);
+      og.gain.setValueAtTime(0.25, t); og.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+      o.connect(og).connect(ac.destination); o.start(t); o.stop(t + 0.05);
+    } catch (e) {}
+  }
+  function buzz(ms) { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) {} }
+  document.addEventListener("click", function (e) { if (e.target.closest("button")) relay(); });
+  function soundLabel() { $("btn-sound").textContent = "Klik przekaźnika: " + (soundOn ? "wł." : "wył."); $("btn-sound").setAttribute("aria-pressed", soundOn ? "true" : "false"); }
+  $("btn-sound").addEventListener("click", function () { soundOn = !soundOn; try { localStorage.setItem("rp-sound", soundOn ? "1" : "0"); } catch (e) {} soundLabel(); relay(); });
+  soundLabel();
+
+  /* EGO load: hovers in the 90s, now and then overloads */
+  var ego = $("ego"), egoBusy = false;
+  setInterval(function () {
+    if (egoBusy) return;
+    if (Math.random() < 0.03) {
+      egoBusy = true; ego.classList.add("over"); ego.style.setProperty("--ego", "100%"); $("ego-t").textContent = "EGO OVERLOAD";
+      setTimeout(function () { ego.classList.remove("over"); egoBusy = false; }, 1400);
+      return;
+    }
+    var v = 92 + Math.floor(Math.random() * 8); ego.style.setProperty("--ego", v + "%"); $("ego-t").textContent = "EGO " + v + "%";
+  }, 800);
+
+  /* excuse generator */
+  var excuses = ["To nie mikser. To sala.", "Wokalista śpiewał inaczej na próbie.", "Na soundchecku brzmiało idealnie.", "To kabel. Zawsze kabel.", "Ktoś ruszył gałkę, kiedy wyszedłem po kawę.", "Faza. Na pewno faza.", "Monitor był za cicho, więc perkusista grał głośniej.", "To nie sprzężenie, to efekt artystyczny.", "Sala pochłania tylko dobre częstotliwości.", "Basista podkręcił się po soundchecku.", "Wtyczka jeszcze się sprawdzała.", "W słuchawkach brzmiało dobrze.", "Publiczność stała w złym miejscu.", "Wilgotność. Dziś wyjątkowa wilgotność."];
+  var lastEx = 0;
+  $("btn-excuse").addEventListener("click", function () {
+    var k; do { k = Math.floor(Math.random() * excuses.length); } while (k === lastEx); lastEx = k; say("excuse", excuses[k]);
+  });
 
   /* tabs */
   var tabs = ["racks", "patch", "align", "rec"];
@@ -376,8 +473,60 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
     $("disp-h").textContent = line[0]; $("disp-p").textContent = line[1];
     back = setTimeout(function () { $("disp-e").textContent = home.e; $("disp-dot").className = "dot green"; $("disp-h").textContent = home.h; $("disp-p").innerHTML = home.p; ["btn-m", "btn-byp"].forEach(function (id) { $(id).setAttribute("aria-pressed", "false"); $(id).classList.remove("on-red", "on-amber"); }); muted = false; }, 4500);
   }
-  $("btn-m").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-red"); $("btn-byp").classList.remove("on-amber"); show("Mute · Rack 01", "red", mLines[mi++ % mLines.length]); muted = true; });
-  $("btn-byp").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-amber"); $("btn-m").classList.remove("on-red"); muted = false; show("Bypass · Rack 01", "amber", bLines[bi++ % bLines.length]); });
+  $("btn-m").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-red"); $("btn-byp").classList.remove("on-amber"); show("Mute · Rack 01", "red", mLines[mi++ % mLines.length]); muted = true; buzz(20); });
+  $("btn-byp").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-amber"); $("btn-m").classList.remove("on-red"); muted = false; buzz([12, 40, 12]); show("Bypass · Rack 01", "amber", bLines[bi++ % bLines.length]); });
+
+  /* AMBICJA knob: drag up/right to turn, arrows on keyboard; speeds up the wealth scan */
+  var knob = $("knob"), amb = 5, scanIv = null;
+  function ambNote(v) {
+    if (v === 0) return "Ambicja 0. Bogactwo i tak się ładuje.";
+    if (v < 5) return "Spokojnie. Bogactwo ładuje się w swoim tempie.";
+    if (v < 9) return "Ładowanie szybsze o " + (v * 0.0001).toFixed(4).replace(".", ",") + " %.";
+    if (v < 11) return "Prawie maks. Sąsiedzi już słyszą.";
+    return "11. Bo do 10 to za mało.";
+  }
+  function setAmb(v, live) {
+    var was = amb; amb = Math.max(0, Math.min(11, Math.round(v)));
+    if (live && amb !== was) { relay(); buzz(8); }
+    knob.style.transform = "rotate(" + (-135 + amb / 11 * 270) + "deg)";
+    knob.setAttribute("aria-valuenow", amb); $("amb-val").textContent = amb + " / 11"; $("amb-note").textContent = live ? ambNote(amb) : "Kręć palcem w górę. Skala idzie do 11.";
+    if (live) { clearInterval(scanIv); scanIv = setInterval(scan, 1600 / (1 + amb * 0.35)); }
+  }
+  var kx = 0, ky = 0, kv = 0;
+  knob.addEventListener("pointerdown", function (e) { knob.setPointerCapture(e.pointerId); kx = e.clientX; ky = e.clientY; kv = amb; knob.style.cursor = "grabbing"; });
+  knob.addEventListener("pointermove", function (e) { if (knob.hasPointerCapture(e.pointerId)) setAmb(kv + (ky - e.clientY) / 14 + (e.clientX - kx) / 14, true); });
+  knob.addEventListener("pointerup", function () { knob.style.cursor = ""; });
+  knob.addEventListener("keydown", function (e) {
+    var k = e.key, d = k === "ArrowUp" || k === "ArrowRight" ? 1 : k === "ArrowDown" || k === "ArrowLeft" ? -1 : 0;
+    if (d) { e.preventDefault(); setAmb(amb + d, true); }
+  });
+  setAmb(5, false);
+
+  /* patchbay cable: grab the plug at INSTAGRAM, drop it on KONTO */
+  var bay = $("bay"), svg = $("cable"), ja = $("jack-a"), jb = $("jack-b"), plugged = false, ci = 0;
+  var plugLines = ["Połączono. Każdy nowy obserwujący idzie prosto na konto.", "Sygnał jest. Lajki zamieniają się w złotówki.", "Patch zapisany. Instagram gra na konto."];
+  function centre(el) { var r = el.querySelector(".hole").getBoundingClientRect(), b = bay.getBoundingClientRect(); return { x: r.left + r.width / 2 - b.left, y: r.top + r.height / 2 - b.top }; }
+  function drawCable(p, q) {
+    var dx = q.x - p.x, dy = q.y - p.y, sag = Math.min(150, 40 + Math.sqrt(dx * dx + dy * dy) * 0.45);
+    var d = "M" + p.x + " " + p.y + " Q" + (p.x + q.x) / 2 + " " + (Math.max(p.y, q.y) + sag) + " " + q.x + " " + q.y;
+    svg.innerHTML = '<path d="' + d + '" fill="none" stroke="#0b0c0e" stroke-width="11" stroke-linecap="round"/>' +
+      '<path d="' + d + '" fill="none" stroke="#1f5fbf" stroke-width="7" stroke-linecap="round"/>' +
+      '<path d="' + d + '" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-linecap="round" transform="translate(0,-2)"/>' +
+      '<circle cx="' + p.x + '" cy="' + p.y + '" r="12" fill="#d9dde2" stroke="#0b0c0e" stroke-width="2"/>' +
+      '<circle cx="' + q.x + '" cy="' + q.y + '" r="12" fill="#d9dde2" stroke="#0b0c0e" stroke-width="2"/>';
+  }
+  function pos(e) { var b = bay.getBoundingClientRect(); return { x: e.clientX - b.left, y: e.clientY - b.top }; }
+  ja.addEventListener("pointerdown", function (e) {
+    ja.setPointerCapture(e.pointerId); plugged = false; jb.classList.remove("lit"); ja.classList.remove("lit"); drawCable(centre(ja), pos(e));
+  });
+  ja.addEventListener("pointermove", function (e) { if (ja.hasPointerCapture(e.pointerId)) drawCable(centre(ja), pos(e)); });
+  ja.addEventListener("pointerup", function (e) {
+    var p = pos(e), b = centre(jb);
+    if (Math.abs(p.x - b.x) < 44 && Math.abs(p.y - b.y) < 44) {
+      plugged = true; drawCable(centre(ja), b); ja.classList.add("lit"); jb.classList.add("lit"); say("notice-bay", plugLines[ci++ % plugLines.length]);
+    } else { svg.innerHTML = ""; say("notice-bay", "Wtyk wypadł. Trafiaj w gniazdo KONTO."); }
+  });
+  window.addEventListener("resize", function () { if (plugged) drawCable(centre(ja), centre(jb)); });
 
   /* PATCH */
   var outs = ["Konto", "Sejf", "Skarbonka"], ins = ["Pensja", "Koncerty", "RackPlug", "Przypadkowe znalezisko"];
@@ -412,7 +561,7 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   /* REC */
   var stopLines = ["STOP REC NIE ODEBRANY: bogactwa nie da się zatrzymać.", "Nagrywanie trwa dalej. Następny take: 2027.", "Przycisk działa. Bogactwo po prostu go ignoruje."];
   var si = 0;
-  $("btn-stop").addEventListener("click", function () { say("notice-rec", stopLines[si++ % stopLines.length]); });
+  $("btn-stop").addEventListener("click", function () { buzz(60); say("notice-rec", stopLines[si++ % stopLines.length]); });
 
   /* wealth loading */
   var items = ["Konto_oszczednosciowe.vst3", "Jacht_Ultra.component", "Willa_Toskania.vst3", "Basen_Reverb.vst3", "Studio_Marzen.component", "Porsche_911_Comp.vst3", "Wakacje_Malediwy.vst3", "Zegarek_Analog_EQ.component", "Spokoj_Ducha.vst3", "Wlasna_Wytwornia.vst3"];
@@ -424,6 +573,8 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
     $("bar").setAttribute("aria-valuenow", (p * 100).toFixed(1));
     var day = Math.min(365, Math.floor((now - start) / 864e5) + 1);
     $("count").textContent = day + " / 365 · " + (p * 100).toFixed(1) + "%";
+    var e = Math.max(0, now - start);
+    $("rec-clock").textContent = String(Math.floor(e / 864e5)).padStart(3, "0") + "d " + pad(Math.floor(e / 36e5) % 24) + ":" + pad(Math.floor(e / 6e4) % 60) + ":" + pad(Math.floor(e / 1e3) % 60);
     var d = Math.max(0, target - now);
     $("left").textContent = d === 0 ? "ZAŁADOWANO" : "DO 2027  " + Math.floor(d / 864e5) + "d " + pad(Math.floor(d / 36e5) % 24) + ":" + pad(Math.floor(d / 6e4) % 60) + ":" + pad(Math.floor(d / 1e3) % 60);
   }
@@ -437,7 +588,24 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   function info(t) { clearTimeout(infoBack); $("info").textContent = t; infoBack = setTimeout(function () { $("info").textContent = infoHome; }, 4500); }
   $("btn-bg").addEventListener("click", function () { info(bgLines[gi++ % bgLines.length]); });
   $("btn-later").addEventListener("click", function () { info(laterLines[li++ % laterLines.length]); });
-  tick(); scan(); setInterval(tick, 1000); setInterval(scan, 1600);
+  tick(); scan(); setInterval(tick, 1000); scanIv = setInterval(scan, 1600);
+
+  /* hidden: five taps on the rack number switch Haczan mode on and off */
+  var taps = 0, tapT = 0, hacz = false;
+  var plain = { plate: $("plate").textContent, home: home, m: mLines, b: bLines };
+  var haczan = {
+    plate: "Haczan · tryb serwisowy",
+    home: { e: "Tryb Haczana", h: "Głupi pomysł przyjęty do realizacji.", p: "Termin: wczoraj. Wynik: <strong>działa</strong>." },
+    m: [["Haczan wyciszył problem.", "Problem jeszcze o tym nie wie."], ["Mute w trybie Haczana", "wycisza tylko wymówki."]],
+    b: [["Haczan ominął błąd.", "Błąd nadal szuka drogi powrotu."], ["Bypass serwisowy.", "Sygnał idzie skrótem, który zna tylko Haczan."]]
+  };
+  $("num").addEventListener("click", function () {
+    var now = Date.now(); if (now - tapT > 1500) taps = 0; tapT = now;
+    if (++taps < 5) return;
+    taps = 0; hacz = !hacz; var s = hacz ? haczan : plain;
+    $("plate").textContent = s.plate; home = s.home; mLines = s.m; bLines = s.b; mi = bi = 0;
+    clearTimeout(back); $("disp-e").textContent = home.e; $("disp-dot").className = "dot " + (hacz ? "amber" : "green"); $("disp-h").textContent = home.h; $("disp-p").innerHTML = home.p;
+  });
   document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
 })();
 </script>
