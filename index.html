@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rackplug.com/">
+<title>RackPlug · Kacper Szczepański</title>
+<meta name="description" content="rackplug.com należy do Kacpra Szczepańskiego. W 2027 roku będzie bogaty.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700;800&family=Barlow+Condensed:wght@600&family=Share+Tech+Mono&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+/* Layout: a RackPlug screen — toolbar tabs (RACKPLUG / PATCH / ALIGN / REC), project bar, one view at a time, wealth-loading bar styled like a plug-in scan. Metal drawn in CSS only; no app artwork shipped. Single dark look on purpose. */
+:root {
+  --graphite: #121417;
+  --alu-hi: #e9ecef;
+  --alu-lo: #8d939b;
+  --ink: #101215;
+  --cobalt: #1f5fbf;
+  --cobalt-deep: #0e2e66;
+  --rec: #d7262b;
+  --rec-deep: #7d1015;
+  --led-g: #2fdc5c;
+  --led-a: #ff9f1a;
+  --led-r: #ff3b30;
+  --led-off: #1a2a1f;
+  --text: #f1f3f5;
+  --muted: #9aa1aa;
+  --f-ui: "Barlow Semi Condensed", "Barlow Condensed", "Arial Narrow", sans-serif;
+  --f-cond: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --f-mono: "Share Tech Mono", "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--graphite); color: var(--text); }
+body {
+  font-family: var(--f-ui);
+  padding-block: clamp(16px, 4vw, 48px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.022) 0 1px, transparent 1px 2px, rgba(0,0,0,.05) 2px 3px),
+    radial-gradient(900px 420px at 50% 0%, #23272d 0%, transparent 70%),
+    var(--graphite);
+  user-select: none; -webkit-user-select: none;
+}
+.screen { max-width: 920px; margin: 0 auto; display: grid; gap: 10px; }
+button { font: inherit; border: 0; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--led-a); outline-offset: 3px; }
+
+.key {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 46px; padding: 0 16px; border-radius: 6px;
+  font: 800 clamp(13px, 2.6vw, 17px)/1 var(--f-ui); letter-spacing: .02em; text-transform: uppercase; color: var(--ink);
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, var(--alu-hi), #c5cad0 45%, #aab0b8 55%, var(--alu-lo));
+  box-shadow: inset 0 1px 0 #fff, inset 0 -2px 0 rgba(0,0,0,.35), 0 0 0 2px #2b2f35, 0 0 0 3px #0a0b0d, 0 3px 6px rgba(0,0,0,.6);
+  transition: transform .06s, filter .15s;
+}
+button.key:active { transform: translateY(1px); filter: brightness(.92); }
+.key.cobalt, .key[aria-selected="true"] { color: #fff; background: linear-gradient(180deg, #4a8cf0, var(--cobalt) 50%, var(--cobalt-deep)); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 0 rgba(0,0,0,.4), 0 0 0 2px #2b2f35, 0 0 0 3px #0a0b0d, 0 0 14px rgba(31,95,191,.55); }
+.key.dark { color: var(--text); background: linear-gradient(180deg, #2c3036, #15171a); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 0 0 2px #3a3f46, 0 0 0 3px #0a0b0d; }
+.key.on-red { color: #fff; background: linear-gradient(180deg, #ff5a5f, var(--rec) 50%, var(--rec-deep)); }
+.key.on-amber { color: var(--ink); background: linear-gradient(180deg, #ffd27a, var(--led-a) 50%, #a55d00); }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.dot.amber { background: var(--led-a); box-shadow: 0 0 8px var(--led-a); }
+.dot.red { background: var(--led-r); box-shadow: 0 0 8px var(--led-r); }
+.dot.green { background: var(--led-g); box-shadow: 0 0 8px var(--led-g); }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; border-radius: 8px; background: linear-gradient(180deg, #2a2e34, #16181c); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 0 1px #000; }
+.toolbar .spacer { flex: 1 1 0; min-width: 0; }
+.project { text-align: center; padding: 11px 12px; border-radius: 5px; font: 700 13px/1 var(--f-ui); letter-spacing: .08em; text-transform: uppercase; background: #0b0c0e; box-shadow: inset 0 2px 5px rgba(0,0,0,.9), 0 0 0 2px #3a3f46; }
+
+.lane { display: grid; gap: 12px; padding: 14px; border-radius: 10px; background: linear-gradient(180deg, #2f343a, #1c1f24 30%, #17191d); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 0 0 1px #000, 0 12px 28px rgba(0,0,0,.5); }
+.head { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: stretch; }
+.num { display: grid; place-items: center; min-width: 64px; font: 800 38px/1 var(--f-ui); color: transparent; -webkit-text-stroke: 1.5px #d4d8dd; border-radius: 6px; background: linear-gradient(180deg, #2c3036, #15171a); box-shadow: 0 0 0 2px #3a3f46; }
+.plate { display: grid; place-items: center; min-width: 0; padding: 10px; border-radius: 6px; font: 800 clamp(18px, 4vw, 30px)/1.1 var(--f-ui); text-transform: uppercase; text-align: center; color: #fff; background: linear-gradient(180deg, #3f7fe0, var(--cobalt) 45%, var(--cobalt-deep)); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 0 0 2px #2b2f35, 0 0 18px rgba(31,95,191,.35); text-wrap: balance; }
+.pdc { display: grid; place-items: center; align-content: center; gap: 3px; padding: 6px 14px; text-align: center; }
+.pdc b { font: 800 18px/1 var(--f-ui); }
+.pdc span { font: 600 11px/1 var(--f-cond); letter-spacing: .12em; }
+
+.io { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
+.meter { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 8px 10px; border-radius: 6px; background: #0a0b0d; box-shadow: inset 0 2px 5px rgba(0,0,0,.9), 0 0 0 2px #3a3f46; min-width: 0; }
+.led { display: grid; place-items: center; height: 30px; border-radius: 15px; font: 700 11px/1 var(--f-cond); color: rgba(0,0,0,.6); background: radial-gradient(circle at 50% 30%, #2a3a2e, var(--led-off)); }
+.led.on { color: rgba(0,0,0,.7); background: radial-gradient(circle at 50% 30%, #fff 0%, var(--c) 35%, color-mix(in srgb, var(--c) 55%, #000) 100%); box-shadow: 0 0 12px var(--c); }
+
+.display { padding: clamp(18px, 4vw, 30px); border-radius: 6px; background: #07080a; box-shadow: inset 0 3px 10px rgba(0,0,0,.95), 0 0 0 2px #3a3f46; min-width: 0; }
+.eyebrow { font: 600 12px/1 var(--f-cond); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+h1, h2 { margin: 14px 0 8px; font: 800 clamp(26px, 6vw, 50px)/1.05 var(--f-ui); text-transform: uppercase; letter-spacing: .005em; text-wrap: balance; }
+h2 { font-size: clamp(22px, 4.6vw, 36px); }
+.display p { margin: 0; font: 700 clamp(18px, 3.6vw, 26px)/1.25 var(--f-ui); color: var(--muted); }
+.display p strong, .gold { color: var(--led-a); font-weight: 800; }
+.mb { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mb .key { min-height: 52px; font-size: clamp(18px, 3.4vw, 24px); }
+.notice { min-height: 1.3em; font: 700 clamp(16px, 3vw, 20px)/1.3 var(--f-ui); color: var(--led-a); text-align: center; }
+
+/* wealth loading = the app's FIRST SCAN panel: double silver bezel, corner screws, segmented cobalt bar */
+.scan {
+  position: relative; display: grid; gap: 14px; padding: clamp(18px, 4vw, 26px) clamp(18px, 4vw, 30px);
+  border-radius: 10px;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 3px), linear-gradient(180deg, #24272c, #141619);
+  box-shadow: inset 0 0 0 2px #0b0c0e, inset 0 0 0 4px #b9bec5, inset 0 0 0 5px #5f656d, 0 0 0 2px #d9dde2, 0 0 0 4px #6c727a, 0 0 0 5px #0b0c0e, 0 16px 34px rgba(0,0,0,.6);
+}
+.scan::before, .scan::after { content: ""; position: absolute; top: 16px; width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #e3e6ea, #6d737b 55%, #24272b); box-shadow: 0 0 0 1px #0b0c0e; }
+.scan::before { left: 18px; } .scan::after { right: 18px; }
+.scan-kicker { text-align: center; font: 700 clamp(14px, 2.8vw, 19px)/1 var(--f-ui); text-transform: uppercase; color: #cfd3d8; }
+.scan-title { margin: -4px 0 0; text-align: center; font: 800 clamp(22px, 5vw, 34px)/1.05 var(--f-ui); text-transform: uppercase; color: var(--text); }
+.bar { position: relative; height: 22px; border-radius: 11px; background: #050607; box-shadow: inset 0 2px 5px rgba(0,0,0,.95), 0 0 0 1px #2c3036; overflow: hidden; }
+.bar i { position: absolute; inset: 3px auto 3px 3px; width: 0; border-radius: 8px;
+  background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(10,30,80,.85) 22px 24px), linear-gradient(180deg, #5d9cff, #1f6bff 55%, #1048c8);
+  box-shadow: 0 0 10px rgba(31,107,255,.6); transition: width .6s ease; }
+.scan-stats { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; font: 400 clamp(16px, 3.4vw, 22px)/1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.scan-stats .count { color: #4d95ff; }
+.scan-stats .elapsed { color: #8a9099; font-size: .82em; letter-spacing: .04em; }
+.scan-now { text-align: center; font: 800 clamp(14px, 2.8vw, 17px)/1.2 var(--f-ui); color: #4d95ff; min-height: 1.2em; }
+.scan-info { text-align: center; font: 600 clamp(13px, 2.4vw, 15px)/1.35 var(--f-cond); color: #9aa1aa; margin: -4px 0 0; }
+.scan-btn { width: 100%; min-height: 52px; border-radius: 6px; font: 800 clamp(14px, 2.8vw, 17px)/1 var(--f-ui); text-transform: uppercase; letter-spacing: .04em; background: linear-gradient(180deg, #121417, #08090b); }
+.scan-btn.blue { color: #59a0ff; box-shadow: inset 0 0 0 2px #1f6bff, inset 0 0 12px rgba(31,107,255,.35), 0 0 0 1px #0b0c0e, 0 0 14px rgba(31,107,255,.35); }
+.scan-btn.silver { color: #e9ecef; box-shadow: inset 0 0 0 2px #b9bec5, inset 0 0 0 3px #4a4f56, 0 0 0 1px #0b0c0e; }
+.scan-btn:active { transform: translateY(1px); }
+
+/* PATCH grid */
+.grid { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 14px; font: 700 clamp(11px, 2.4vw, 14px)/1.1 var(--f-ui); text-transform: uppercase; }
+.grid .h { color: var(--muted); align-self: end; text-align: center; padding-bottom: 4px; }
+.grid .r { color: var(--text); display: flex; align-items: center; }
+.cell { height: 40px; border-radius: 6px; background: #15181c; box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 0 0 1px #31363d; }
+.cell.on { background: radial-gradient(circle, var(--led-g) 0 7px, #15181c 8px); }
+.credits { display: grid; gap: 12px; margin-top: 14px; }
+.credit { display: grid; grid-template-columns: 9em 1fr; gap: 14px; align-items: center; }
+.credit .plate { font-size: clamp(16px, 3vw, 22px); min-height: 52px; }
+.credit p { margin: 0; font: 700 clamp(16px, 3vw, 20px)/1.3 var(--f-ui); color: var(--text); min-width: 0; }
+@media (max-width: 560px) { .credit { grid-template-columns: 1fr; gap: 8px; } }
+/* ALIGN */
+.phase { display: grid; gap: 8px; margin-top: 14px; }
+.track { display: grid; grid-template-columns: 7.5em 1fr; gap: 10px; align-items: center; font: 700 14px/1 var(--f-ui); text-transform: uppercase; }
+.wave { height: 40px; border-radius: 6px; background: #07080a; box-shadow: 0 0 0 1px #31363d; position: relative; overflow: hidden; }
+.wave canvas { width: 100%; height: 100%; display: block; }
+
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; font: 600 12px/1.5 var(--f-cond); letter-spacing: .06em; color: var(--muted); padding: 4px 2px; }
+
+@keyframes blink { 50% { opacity: .35; } }
+@keyframes stripes { to { background-position: 22px 0, 0 0; } }
+@media (max-width: 560px) {
+  .head { grid-template-columns: auto 1fr; }
+  .pdc { grid-column: 1 / -1; }
+  .io { grid-template-columns: 1fr; }
+  .toolbar .key { padding: 0 11px; }
+}
+@media (prefers-reduced-motion: reduce) { .scan-title .dot, .bar i { animation: none; } }
+</style>
+</head>
+<body>
+
+<main class="screen" aria-label="RackPlug">
+  <div class="toolbar" role="tablist" aria-label="Widoki">
+    <button class="key" role="tab" id="t-racks" aria-controls="v-racks" aria-selected="true">RackPlug</button>
+    <button class="key" role="tab" id="t-patch" aria-controls="v-patch" aria-selected="false">Patch</button>
+    <button class="key" role="tab" id="t-align" aria-controls="v-align" aria-selected="false">Align</button>
+    <button class="key" role="tab" id="t-rec" aria-controls="v-rec" aria-selected="false"><span class="dot red"></span>Rec</button>
+    <span class="spacer"></span>
+    <span class="key dark" aria-hidden="true"><span class="dot amber"></span>Live</span>
+  </div>
+
+  <div class="project">Project | Kacper Szczepański</div>
+
+  <!-- RACKPLUG -->
+  <section class="lane" id="v-racks" role="tabpanel" aria-labelledby="t-racks">
+    <div class="head">
+      <div class="num" aria-hidden="true">01</div>
+      <div class="plate">Kacper Szczepański</div>
+      <div class="key dark pdc" aria-label="Rok 2027: bogaty"><b>2027</b><span>Bogaty</span></div>
+    </div>
+    <div class="io">
+      <span class="key" aria-hidden="true">In 01</span>
+      <div class="meter" id="meter" role="meter" aria-label="Postęp do 2027 roku"></div>
+    </div>
+    <div class="display" aria-live="polite">
+      <div class="eyebrow"><span class="dot green" id="disp-dot"></span><span id="disp-e">Właściciel strony</span></div>
+      <h1 id="disp-h">Ta strona należy do Kacpra Szczepańskiego.</h1>
+      <p id="disp-p">W <strong>2027 roku</strong> będzie bogaty.</p>
+    </div>
+    <div class="mb">
+      <button class="key" id="btn-m" aria-pressed="false">M</button>
+      <button class="key" id="btn-byp" aria-pressed="false">Byp</button>
+    </div>
+  </section>
+
+  <!-- PATCH -->
+  <section class="lane" id="v-patch" role="tabpanel" aria-labelledby="t-patch" hidden>
+    <div class="display">
+      <div class="eyebrow"><span class="dot green"></span>Patch · routing pieniędzy</div>
+      <h2>Wszystkie wejścia idą do Kacpra</h2>
+      <p>Kliknij dowolny punkt. Sygnał i tak trafi na konto.</p>
+      <div class="grid" id="grid" aria-label="Siatka routingu"></div>
+    </div>
+    <div class="notice" id="notice-patch" aria-live="polite"></div>
+    <div class="display">
+      <div class="eyebrow"><span class="dot green"></span>Podziękowania · routing wdzięczności</div>
+      <div class="credits">
+        <div class="credit">
+          <div class="plate">Haczan</div>
+          <p>Za to, że kiedy przychodzę z głupim pomysłem, zawsze pomaga mi go zrobić. Równie głupio i zawsze skutecznie.</p>
+        </div>
+        <div class="credit">
+          <div class="plate">Emil</div>
+          <p>Za to, że uświadomił mi, że AI jest już na takim poziomie, że moje pomysły mogą stać się prawdziwe. Czas przestać marzyć i zacząć działać.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALIGN -->
+  <section class="lane" id="v-align" role="tabpanel" aria-labelledby="t-align" hidden>
+    <div class="display">
+      <div class="eyebrow"><span class="dot green"></span>Align · wyrównanie fazy</div>
+      <h2>Gwiazdy wyrównane do 2027</h2>
+      <p>Opóźnienie do bogactwa: <span class="gold" id="delay">0,00 ms</span>. Faza zgodna, nic nie znosi się do zera.</p>
+      <div class="phase">
+        <div class="track"><span>Talent</span><div class="wave"><canvas id="w1" height="40"></canvas></div></div>
+        <div class="track"><span>Ciężka praca</span><div class="wave"><canvas id="w2" height="40"></canvas></div></div>
+        <div class="track"><span class="gold">Suma</span><div class="wave"><canvas id="w3" height="40"></canvas></div></div>
+      </div>
+    </div>
+    <button class="key cobalt" id="btn-align">Wyrównaj jeszcze raz</button>
+    <div class="notice" id="notice-align" aria-live="polite"></div>
+  </section>
+
+  <!-- REC -->
+  <section class="lane" id="v-rec" role="tabpanel" aria-labelledby="t-rec" hidden>
+    <div class="display">
+      <div class="eyebrow"><span class="dot red"></span>Rec · take 2027</div>
+      <h2>Nagrywanie trwa</h2>
+      <p>Ślad 01: bogactwo, 48 kHz, 24 bit. Folder sesji: konto Kacpra.</p>
+    </div>
+    <button class="key on-red" id="btn-stop" style="min-height:60px;font-size:clamp(20px,4vw,28px)">■ Stop Rec</button>
+    <div class="notice" id="notice-rec" aria-live="polite"></div>
+  </section>
+
+  <!-- wealth loading, scan look -->
+  <section class="scan" aria-label="Ładowanie bogactwa">
+    <div class="scan-kicker">Bogactwo · first scan</div>
+    <h2 class="scan-title">Ładowanie bogactwa</h2>
+    <div class="bar" role="progressbar" aria-label="Postęp ładowania bogactwa" aria-valuemin="0" aria-valuemax="100" id="bar"><i id="fill"></i></div>
+    <div class="scan-stats"><span class="count" id="count">— / 365 · —</span><span class="elapsed" id="left">DO 2027 —</span></div>
+    <div class="scan-now" id="now">NOW · —</div>
+    <p class="scan-info" id="info">Bogactwo ładuje się po jednym dniu. Możesz dalej pracować.</p>
+    <button class="scan-btn blue" id="btn-bg">Kontynuuj w tle</button>
+    <button class="scan-btn silver" id="btn-later">Stop · dokończ później</button>
+  </section>
+
+  <footer class="foot">
+    <span>© 2026 Kacper Szczepański. Wszelkie prawa zastrzeżone.</span>
+    <span>rackplug.com · .app · .pl · .eu</span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  var start = new Date(2026, 0, 1).getTime(), target = new Date(2027, 0, 1).getTime();
+  function $(id) { return document.getElementById(id); }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function say(id, text) { var n = $(id); n.textContent = ""; setTimeout(function () { n.textContent = text; }, 30); }
+
+  /* tabs */
+  var tabs = ["racks", "patch", "align", "rec"];
+  tabs.forEach(function (t) {
+    $("t-" + t).addEventListener("click", function () {
+      tabs.forEach(function (o) { $("t-" + o).setAttribute("aria-selected", o === t ? "true" : "false"); $("v-" + o).hidden = o !== t; });
+      if (t === "align") drawWaves(0);
+    });
+  });
+
+  /* meter */
+  var meter = $("meter"), db = ["-50", "-39", "-29", "-18", "-6", "0"], cols = ["--led-g", "--led-g", "--led-g", "--led-g", "--led-a", "--led-r"], leds = [];
+  db.forEach(function (v, i) { var s = document.createElement("span"); s.className = "led"; s.textContent = v; s.style.setProperty("--c", "var(" + cols[i] + ")"); meter.appendChild(s); leds.push(s); });
+
+  /* M and BYP */
+  var mLines = [["I tak będę bogaty.", "Nic z tym nie zrobisz."], ["Mute nie działa", "na bogactwo."], ["Wyciszone?", "Pieniądze i tak płyną."], ["Spróbuj jeszcze raz.", "Wynik ten sam: bogaty."]];
+  var bLines = [["Bypass niedostępny.", "Bogactwo jest wpięte na stałe w ścieżkę sygnału."], ["Ominięto biedę.", "Zostało tylko bogactwo."], ["BYP pominął", "tylko poniedziałki."], ["Bypass odrzucony.", "Wtyczka „Bogactwo” wymaga 100% sygnału."]];
+  var mi = 0, bi = 0, back = null;
+  var home = { e: $("disp-e").textContent, h: $("disp-h").textContent, p: $("disp-p").innerHTML };
+  function show(label, dot, line) {
+    clearTimeout(back);
+    $("disp-e").textContent = label; $("disp-dot").className = "dot " + dot;
+    $("disp-h").textContent = line[0]; $("disp-p").textContent = line[1];
+    back = setTimeout(function () { $("disp-e").textContent = home.e; $("disp-dot").className = "dot green"; $("disp-h").textContent = home.h; $("disp-p").innerHTML = home.p; ["btn-m", "btn-byp"].forEach(function (id) { $(id).setAttribute("aria-pressed", "false"); $(id).classList.remove("on-red", "on-amber"); }); }, 4500);
+  }
+  $("btn-m").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-red"); $("btn-byp").classList.remove("on-amber"); show("Mute · Rack 01", "red", mLines[mi++ % mLines.length]); });
+  $("btn-byp").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-amber"); $("btn-m").classList.remove("on-red"); show("Bypass · Rack 01", "amber", bLines[bi++ % bLines.length]); });
+
+  /* PATCH */
+  var outs = ["Konto", "Sejf", "Skarbonka"], ins = ["Pensja", "Koncerty", "RackPlug", "Przypadkowe znalezisko"];
+  var grid = $("grid");
+  grid.insertAdjacentHTML("beforeend", '<span class="h"></span>' + outs.map(function (o) { return '<span class="h">' + o + "</span>"; }).join(""));
+  ins.forEach(function (inp) {
+    grid.insertAdjacentHTML("beforeend", '<span class="r">' + inp + "</span>");
+    outs.forEach(function (o, j) {
+      var c = document.createElement("button"); c.className = "cell" + (j === 0 ? " on" : ""); c.setAttribute("aria-label", inp + " do " + o);
+      c.addEventListener("click", function () {
+        var row = Array.prototype.slice.call(grid.querySelectorAll(".cell")).filter(function (x) { return x.getAttribute("aria-label").indexOf(inp + " do") === 0; });
+        row.forEach(function (x) { x.classList.add("on"); });
+        say("notice-patch", "„" + inp + "” wpięte do: " + outs.join(", ") + ". Wszystko należy do Kacpra.");
+      });
+      grid.appendChild(c);
+    });
+  });
+
+  /* ALIGN */
+  function drawWave(id, shift, amp) {
+    var cv = $(id), w = cv.clientWidth || 300; cv.width = w; var g = cv.getContext("2d"); g.clearRect(0, 0, w, 40);
+    g.strokeStyle = id === "w3" ? "#ff9f1a" : "#2fdc5c"; g.lineWidth = 2; g.beginPath();
+    for (var x = 0; x <= w; x++) { var y = 20 + Math.sin((x / w) * Math.PI * 6 + shift) * amp; x ? g.lineTo(x, y) : g.moveTo(x, y); }
+    g.stroke();
+  }
+  function drawWaves(off) { drawWave("w1", off, 8); drawWave("w2", 0, 8); drawWave("w3", 0, off ? 6 : 16); }
+  $("btn-align").addEventListener("click", function () {
+    var t = 0; drawWaves(1.4); $("delay").textContent = "0,37 ms";
+    var iv = setInterval(function () { t++; var off = 1.4 * (1 - t / 12); drawWaves(off); if (t >= 12) { clearInterval(iv); drawWaves(0); $("delay").textContent = "0,00 ms"; say("notice-align", "Wyrównane. Talent i ciężka praca grają w fazie."); } }, 60);
+  });
+
+  /* REC */
+  var stopLines = ["STOP REC NIE ODEBRANY: bogactwa nie da się zatrzymać.", "Nagrywanie trwa dalej. Następny take: 2027.", "Przycisk działa. Bogactwo po prostu go ignoruje."];
+  var si = 0;
+  $("btn-stop").addEventListener("click", function () { say("notice-rec", stopLines[si++ % stopLines.length]); });
+
+  /* wealth loading */
+  var items = ["Konto_oszczednosciowe.vst3", "Jacht_Ultra.component", "Willa_Toskania.vst3", "Basen_Reverb.vst3", "Studio_Marzen.component", "Porsche_911_Comp.vst3", "Wakacje_Malediwy.vst3", "Zegarek_Analog_EQ.component", "Spokoj_Ducha.vst3", "Wlasna_Wytwornia.vst3"];
+  var ii = 0;
+  function tick() {
+    var now = Date.now(), p = Math.min(1, Math.max(0, (now - start) / (target - start)));
+    var lit = Math.ceil(p * leds.length);
+    leds.forEach(function (s, i) { s.classList.toggle("on", i < lit); });
+    meter.setAttribute("aria-valuenow", Math.round(p * 100));
+    $("fill").style.width = "calc(" + (p * 100).toFixed(2) + "% - 6px)";
+    $("bar").setAttribute("aria-valuenow", (p * 100).toFixed(1));
+    var day = Math.min(365, Math.floor((now - start) / 864e5) + 1);
+    $("count").textContent = day + " / 365 · " + (p * 100).toFixed(1) + "%";
+    var d = Math.max(0, target - now);
+    $("left").textContent = d === 0 ? "ZAŁADOWANO" : "DO 2027  " + Math.floor(d / 864e5) + "d " + pad(Math.floor(d / 36e5) % 24) + ":" + pad(Math.floor(d / 6e4) % 60) + ":" + pad(Math.floor(d / 1e3) % 60);
+  }
+  function scan() {
+    var a = items[ii++ % items.length].replace(/\.(vst3|component)$/, "").replace(/_/g, " ");
+    $("now").textContent = "NOW · " + a + " +1";
+  }
+  var bgLines = ["Ładowanie dalej w tle. Bogactwo nie potrzebuje, żebyś patrzył.", "W tle też się ładuje. Szybciej, niż myślisz."];
+  var laterLines = ["Nie da się dokończyć później. Bogactwo dokończy się samo 1.01.2027.", "Stop odrzucony. Ładowanie bogactwa nie ma pauzy."];
+  var gi = 0, li = 0, infoHome = $("info").textContent, infoBack = null;
+  function info(t) { clearTimeout(infoBack); $("info").textContent = t; infoBack = setTimeout(function () { $("info").textContent = infoHome; }, 4500); }
+  $("btn-bg").addEventListener("click", function () { info(bgLines[gi++ % bgLines.length]); });
+  $("btn-later").addEventListener("click", function () { info(laterLines[li++ % laterLines.length]); });
+  tick(); scan(); setInterval(tick, 1000); setInterval(scan, 1600);
+  document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+})();
+</script>
+
+</body>
+</html>
