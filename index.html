@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="canonical" href="https://rackplug.com/">
+<link rel="canonical" href="https://rackplug.pl/">
 <title>RackPlug · Kacper Szczepański</title>
 <meta name="description" content="rackplug.com należy do Kacpra Szczepańskiego. W 2027 roku będzie bogaty.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,18 +34,24 @@ html,body{margin:0}
   --f-mono: "Share Tech Mono", "SF Mono", Menlo, monospace;
   color-scheme: dark;
 }
+[hidden] { display: none !important; }
 html, body { background: var(--graphite); color: var(--text); }
 body {
   font-family: var(--f-ui);
   padding-block: clamp(16px, 4vw, 48px);
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
+  /* back of a rack cabinet: perforated steel, lit from above */
   background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,.022) 0 1px, transparent 1px 2px, rgba(0,0,0,.05) 2px 3px),
-    radial-gradient(900px 420px at 50% 0%, #23272d 0%, transparent 70%),
-    var(--graphite);
+    radial-gradient(900px 480px at 50% 0%, rgba(60,66,74,.55) 0%, transparent 70%),
+    radial-gradient(circle at 7px 7px, #07080a 2.1px, transparent 2.7px) 0 0 / 14px 14px,
+    radial-gradient(circle at 7px 7.8px, rgba(255,255,255,.05) 2.1px, transparent 2.8px) 0 0 / 14px 14px,
+    linear-gradient(180deg, #1c1f23, #111316);
+  background-attachment: fixed, scroll, scroll, fixed;
   user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: #111316; }
 .screen { max-width: 920px; margin: 0 auto; display: grid; gap: 10px; }
 button { font: inherit; border: 0; cursor: pointer; }
 button:focus-visible { outline: 3px solid var(--led-a); outline-offset: 3px; }
@@ -70,11 +76,27 @@ button.key:active { transform: translateY(1px); filter: brightness(.92); }
 .dot.red { background: var(--led-r); box-shadow: 0 0 8px var(--led-r); }
 .dot.green { background: var(--led-g); box-shadow: 0 0 8px var(--led-g); }
 
-.toolbar { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; border-radius: 8px; background: linear-gradient(180deg, #2a2e34, #16181c); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 0 1px #000; }
+.toolbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; border-radius: 8px; background: linear-gradient(180deg, #2a2e34, #16181c); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 0 1px #000, 0 8px 18px rgba(0,0,0,.55); }
 .toolbar .spacer { flex: 1 1 0; min-width: 0; }
 .project { text-align: center; padding: 11px 12px; border-radius: 5px; font: 700 13px/1 var(--f-ui); letter-spacing: .08em; text-transform: uppercase; background: #0b0c0e; box-shadow: inset 0 2px 5px rgba(0,0,0,.9), 0 0 0 2px #3a3f46; }
 
-.lane { display: grid; gap: 12px; padding: 14px; border-radius: 10px; background: linear-gradient(180deg, #2f343a, #1c1f24 30%, #17191d); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 0 0 1px #000, 0 12px 28px rgba(0,0,0,.5); }
+.lane { --ear: 26px; position: relative; display: grid; gap: 12px; padding: 14px; margin-inline: var(--ear); border-radius: 4px; background: linear-gradient(180deg, #2f343a, #1c1f24 30%, #17191d); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 0 0 1px #000, 0 12px 28px rgba(0,0,0,.5); }
+/* 19-inch rack ears: brushed aluminium, two oval mounting slots each, screw heads in them */
+.lane::before, .lane::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: var(--ear);
+  background:
+    radial-gradient(circle at 50% 22px, #d9dde2 0 3px, #5f656d 3.6px, transparent 4.2px),
+    radial-gradient(circle at 50% calc(100% - 22px), #d9dde2 0 3px, #5f656d 3.6px, transparent 4.2px),
+    radial-gradient(7px 5px at 50% 22px, #050607 92%, transparent),
+    radial-gradient(7px 5px at 50% calc(100% - 22px), #050607 92%, transparent),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.14) 0 1px, transparent 1px 2px, rgba(0,0,0,.08) 2px 3px),
+    linear-gradient(90deg, #7d838b, #e3e6ea 45%, #b3b9c0 70%, #6c727a);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -1px 0 rgba(0,0,0,.5), 0 0 0 1px #0a0b0d;
+}
+.lane::before { left: calc(-1 * var(--ear)); border-radius: 4px 0 0 4px; }
+.lane::after { right: calc(-1 * var(--ear)); border-radius: 0 4px 4px 0; transform: scaleX(-1); }
+/* the rack's top label strip, engraved like a front panel */
+.rack-label { display: flex; justify-content: space-between; gap: 10px; margin-inline: var(--ear, 26px); padding: 0 4px; font: 600 11px/1 var(--f-cond); letter-spacing: .2em; text-transform: uppercase; color: #6f7680; text-shadow: 0 1px 0 rgba(255,255,255,.06); }
 .head { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: stretch; }
 .num { display: grid; place-items: center; min-width: 64px; font: 800 38px/1 var(--f-ui); color: transparent; -webkit-text-stroke: 1.5px #d4d8dd; border-radius: 6px; background: linear-gradient(180deg, #2c3036, #15171a); box-shadow: 0 0 0 2px #3a3f46; }
 .plate { display: grid; place-items: center; min-width: 0; padding: 10px; border-radius: 6px; font: 800 clamp(18px, 4vw, 30px)/1.1 var(--f-ui); text-transform: uppercase; text-align: center; color: #fff; background: linear-gradient(180deg, #3f7fe0, var(--cobalt) 45%, var(--cobalt-deep)); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 0 0 2px #2b2f35, 0 0 18px rgba(31,95,191,.35); text-wrap: balance; }
@@ -163,7 +185,20 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   .head { grid-template-columns: auto 1fr; }
   .pdc { grid-column: 1 / -1; }
   .io { grid-template-columns: 1fr; }
-  .toolbar .key { padding: 0 11px; }
+  /* phone: the four tabs share one row, LIVE lamp goes */
+  .toolbar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 8px; }
+  .toolbar .key { padding: 0 4px; font-size: 13px; min-width: 0; }
+  .toolbar .spacer, .toolbar .live { display: none; }
+  .lane { --ear: 14px; padding: 10px; }
+  .lane::before, .lane::after { background-size: auto; }
+  .rack-label { --ear: 14px; letter-spacing: .12em; }
+  .num { min-width: 52px; font-size: 30px; }
+  .slot { grid-template-columns: 34px 1fr; }
+  .slot-num { font-size: 24px; }
+  .insta { gap: 12px; }
+  .insta-logo { width: 44px; height: 44px; border-radius: 12px; }
+  .insta-logo::before { inset: 9px; border-width: 3px; border-radius: 9px; }
+  .insta-logo::after { width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-width: 3px; }
 }
 @media (prefers-reduced-motion: reduce) { .scan-title .dot, .bar i { animation: none; } }
 </style>
@@ -177,10 +212,12 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
     <button class="key" role="tab" id="t-align" aria-controls="v-align" aria-selected="false">Align</button>
     <button class="key" role="tab" id="t-rec" aria-controls="v-rec" aria-selected="false"><span class="dot red"></span>Rec</button>
     <span class="spacer"></span>
-    <span class="key dark" aria-hidden="true"><span class="dot amber"></span>Live</span>
+    <span class="key dark live" aria-hidden="true"><span class="dot amber"></span>Live</span>
   </div>
 
   <div class="project">Project | Kacper Szczepański</div>
+
+  <div class="rack-label" aria-hidden="true"><span>RackPlug · Rack 01</span><span>1U · 19"</span></div>
 
   <!-- RACKPLUG -->
   <section class="lane" id="v-racks" role="tabpanel" aria-labelledby="t-racks">
@@ -314,6 +351,20 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   var meter = $("meter"), db = ["-50", "-39", "-29", "-18", "-6", "0"], cols = ["--led-g", "--led-g", "--led-g", "--led-g", "--led-a", "--led-r"], leds = [];
   db.forEach(function (v, i) { var s = document.createElement("span"); s.className = "led"; s.textContent = v; s.style.setProperty("--c", "var(" + cols[i] + ")"); meter.appendChild(s); leds.push(s); });
 
+  /* live input meter: music-like level (beat + noise), fast attack, slow release, peak hold; muted by M */
+  var level = 0, peak = -1, peakT = 0, beat = 0, muted = false;
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function meterStep() {
+    beat = (beat + 1) % 8;
+    var target = muted ? 0 : 0.42 + (beat === 0 ? 0.42 : beat === 4 ? 0.3 : 0) + (Math.random() - 0.4) * 0.3 + (Math.random() < 0.04 ? 0.35 : 0);
+    target = Math.max(0, Math.min(1, target));
+    level = target > level ? target : level * 0.8 + target * 0.2;
+    var lit = Math.round(level * leds.length);
+    if (lit - 1 >= peak) { peak = lit - 1; peakT = 12; } else if (--peakT <= 0) { peak = Math.max(-1, peak - 1); peakT = 2; }
+    leds.forEach(function (s, i) { s.classList.toggle("on", i < lit || i === peak); });
+  }
+  if (still) { leds.forEach(function (s, i) { s.classList.toggle("on", i < 4); }); } else { setInterval(meterStep, 90); }
+
   /* M and BYP */
   var mLines = [["I tak będę bogaty.", "Nic z tym nie zrobisz."], ["Mute nie działa", "na bogactwo."], ["Wyciszone?", "Pieniądze i tak płyną."], ["Spróbuj jeszcze raz.", "Wynik ten sam: bogaty."]];
   var bLines = [["Bypass niedostępny.", "Bogactwo jest wpięte na stałe w ścieżkę sygnału."], ["Ominięto biedę.", "Zostało tylko bogactwo."], ["BYP pominął", "tylko poniedziałki."], ["Bypass odrzucony.", "Wtyczka „Bogactwo” wymaga 100% sygnału."]];
@@ -323,10 +374,10 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
     clearTimeout(back);
     $("disp-e").textContent = label; $("disp-dot").className = "dot " + dot;
     $("disp-h").textContent = line[0]; $("disp-p").textContent = line[1];
-    back = setTimeout(function () { $("disp-e").textContent = home.e; $("disp-dot").className = "dot green"; $("disp-h").textContent = home.h; $("disp-p").innerHTML = home.p; ["btn-m", "btn-byp"].forEach(function (id) { $(id).setAttribute("aria-pressed", "false"); $(id).classList.remove("on-red", "on-amber"); }); }, 4500);
+    back = setTimeout(function () { $("disp-e").textContent = home.e; $("disp-dot").className = "dot green"; $("disp-h").textContent = home.h; $("disp-p").innerHTML = home.p; ["btn-m", "btn-byp"].forEach(function (id) { $(id).setAttribute("aria-pressed", "false"); $(id).classList.remove("on-red", "on-amber"); }); muted = false; }, 4500);
   }
-  $("btn-m").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-red"); $("btn-byp").classList.remove("on-amber"); show("Mute · Rack 01", "red", mLines[mi++ % mLines.length]); });
-  $("btn-byp").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-amber"); $("btn-m").classList.remove("on-red"); show("Bypass · Rack 01", "amber", bLines[bi++ % bLines.length]); });
+  $("btn-m").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-red"); $("btn-byp").classList.remove("on-amber"); show("Mute · Rack 01", "red", mLines[mi++ % mLines.length]); muted = true; });
+  $("btn-byp").addEventListener("click", function () { this.setAttribute("aria-pressed", "true"); this.classList.add("on-amber"); $("btn-m").classList.remove("on-red"); muted = false; show("Bypass · Rack 01", "amber", bLines[bi++ % bLines.length]); });
 
   /* PATCH */
   var outs = ["Konto", "Sejf", "Skarbonka"], ins = ["Pensja", "Koncerty", "RackPlug", "Przypadkowe znalezisko"];
@@ -368,8 +419,6 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   var ii = 0;
   function tick() {
     var now = Date.now(), p = Math.min(1, Math.max(0, (now - start) / (target - start)));
-    var lit = Math.ceil(p * leds.length);
-    leds.forEach(function (s, i) { s.classList.toggle("on", i < lit); });
     meter.setAttribute("aria-valuenow", Math.round(p * 100));
     $("fill").style.width = "calc(" + (p * 100).toFixed(2) + "% - 6px)";
     $("bar").setAttribute("aria-valuenow", (p * 100).toFixed(1));
