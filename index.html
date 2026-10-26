@@ -356,11 +356,11 @@ h2 { font-size: clamp(22px, 4.6vw, 36px); }
   var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function meterStep() {
     beat = (beat + 1) % 8;
-    var target = muted ? 0 : 0.42 + (beat === 0 ? 0.42 : beat === 4 ? 0.3 : 0) + (Math.random() - 0.4) * 0.3 + (Math.random() < 0.04 ? 0.35 : 0);
+    var target = muted ? 0 : 0.3 + (beat === 0 ? 0.32 : beat === 4 ? 0.2 : 0) + (Math.random() - 0.5) * 0.36 + (Math.random() < 0.025 ? 0.28 : 0);
     target = Math.max(0, Math.min(1, target));
-    level = target > level ? target : level * 0.8 + target * 0.2;
+    level = target > level ? target : level * 0.62 + target * 0.38;
     var lit = Math.round(level * leds.length);
-    if (lit - 1 >= peak) { peak = lit - 1; peakT = 12; } else if (--peakT <= 0) { peak = Math.max(-1, peak - 1); peakT = 2; }
+    if (lit - 1 >= peak) { peak = lit - 1; peakT = 8; } else if (--peakT <= 0) { peak = Math.max(-1, peak - 1); peakT = 2; }
     leds.forEach(function (s, i) { s.classList.toggle("on", i < lit || i === peak); });
   }
   if (still) { leds.forEach(function (s, i) { s.classList.toggle("on", i < 4); }); } else { setInterval(meterStep, 90); }
